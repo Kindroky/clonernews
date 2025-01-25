@@ -8,6 +8,10 @@ const BUTTONS = document.querySelectorAll(".selection");
 let actual_theme = "beststories.json";
 let POSTS = getIdsArray();
 
+//ON DOCUMENT LOAD
+add_10_Posts();
+verifyNewPost();
+
 //fetching data
 async function fetchingData(data) {
   if (VERBOSE >= 2) {
@@ -70,8 +74,6 @@ async function add_10_Posts() {
   }
 }
 
-add_10_Posts();
-
 const throttled = _.throttle(add_10_Posts, 2000);
 window.onscroll = function () {
   if (
@@ -82,7 +84,7 @@ window.onscroll = function () {
     throttled();
   }
 };
-verifyNewPost();
+
 async function verifyNewPost() {
   let actualID = await fetchingData("maxitem.json");
 
