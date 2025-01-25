@@ -30,8 +30,9 @@
     </header>
   </body>
   <div id="alert" class="alert" style="display: none;">
-    <span class="button" onclick="location.reload();">&times;</span>
+    <span class="close-button" onclick="document.getElementById('alert').style.display='none';">&times;</span>
     <span id="alert-message">ALERT : New content available, check it out!</span>
+    <button onclick="location.reload();" class="refresh-button">Refresh</button>
   </div>
   <div id="posts-container"></div>
   <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
