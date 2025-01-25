@@ -95,12 +95,13 @@ window.onscroll = function () {
 
 async function verifyNewPost() {
   let actualID = await fetchingData("maxitem.json");
+  const alertDiv = document.getElementById("alert");
 
   setInterval(async () => {
     try {
       const maxID = await fetchingData("maxitem.json");
       if (actualID !== maxID) {
-        alert("❗ ALERT : New content available, check it out!");
+        alertDiv.style.display = "block";
         actualID = maxID;
       }
     } catch (error) {
