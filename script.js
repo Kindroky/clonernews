@@ -12,6 +12,14 @@ let POSTS = getIdsArray();
 add_10_Posts();
 verifyNewPost();
 
+BUTTONS.forEach((button) => {
+  button.addEventListener("click", function () {
+    POSTS_CONTAINER.innerHTML = "";
+    actual_theme = this.id + ".json";
+    add_10_Posts();
+  });
+});
+
 //fetching data
 async function fetchingData(data) {
   if (VERBOSE >= 2) {
