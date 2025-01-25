@@ -1,10 +1,11 @@
 //CONSTANTS
 const VERBOSE = 1;
 const BASE_URL = "https://hacker-news.firebaseio.com/v0/";
-const THEME = "newstories.json";
 const POSTS_CONTAINER = document.getElementById("posts-container");
+const BUTTONS = document.querySelectorAll(".selection");
 
 //VARIABLES
+let actual_theme = "beststories.json";
 let POSTS = getIdsArray();
 
 //fetching data
@@ -32,7 +33,8 @@ async function fetchingPosts(id) {
 }
 
 async function getIdsArray() {
-  const postIds = await fetchingData(THEME);
+  const theme = actual_theme;
+  const postIds = await fetchingData(theme);
   if (VERBOSE >= 1) console.log("Post IDs:", postIds);
   return postIds;
 }
@@ -62,17 +64,29 @@ async function add_10_Posts() {
     <p>${post.score} points</p>
     <p>By <strong>${post.by}</strong></p>
     <p>${new Date(post.time * 1000).toLocaleString()}</p>
-    <p>URL : <a href="${post.url}">link</a></p> `;
+    <p>URL : <a href="${post.url} target="_blank"">link</a></p> `;
     POSTS_CONTAINER.appendChild(newPostDiv);
   }
 }
 
 add_10_Posts();
 
-const throttled = _.throttle(add_10_Posts, 2000) 
-window.onscroll = function(ev) {
-  if ((window.innerHeight + Math.round(window.scrollY)) > document.body.offsetHeight) {
-      console.log("triggering at the end of page")
-      throttled();
+const throttled = _.throttle(add_10_Posts, 2000);
+window.onscroll = function () {
+  if (
+    window.innerHeight + Math.round(window.scrollY) >
+    document.body.offsetHeight
+  ) {
+    console.log("triggering at the end of page");
+    throttled();
   }
-}
+};
+
+BUTTONS.forEach((button) => {
+  button.addEventListener("click", function () {
+    POSTS_CONTAINER.innerHTML = "";
+    actual_theme = this.id + ".json";
+    POSTS = getIdsArray();
+    add_10_Posts();
+  });
+});
