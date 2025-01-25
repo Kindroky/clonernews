@@ -7,30 +7,30 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #e99089;
-  color: white;
+  background-color: #aa5237;
+  color: rgb(252, 247, 204);
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   z-index: 1000;
   display: none;
-  max-width: 300px;
+  max-width: 320px;
   font-family: 'Courier New';
-}
-
-.alert .button {
-  color: white;
-  float: right;
   font-weight: bold;
-  font-size: 20px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-  margin-left: 15px;
 }
 
-.alert .button:hover {
-  color: #000;
+.refresh-button {
+  font-family:'Arial';
+  font-weight: bold;
+  background-color: rgb(216, 208, 100);
+  color: rgb(8, 83, 112);
+  font-size: 13px;
+  line-height: 25px;
+}
+
+.refresh-button:hover {
+  color: #96361f;
+  background-color:rgb(125, 201, 224) ;
 }
 
 #alert-message {
