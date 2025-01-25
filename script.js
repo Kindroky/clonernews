@@ -69,10 +69,10 @@ async function add_10_Posts() {
 
 add_10_Posts();
 
-
+const throttled = _.throttle(add_10_Posts, 2000) 
 window.onscroll = function(ev) {
-  if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight) {
-      const throttled = _.throttle(add_10_Posts, 2000) 
+  if ((window.innerHeight + Math.round(window.scrollY)) > document.body.offsetHeight) {
       console.log("triggering at the end of page")
+      throttled();
   }
 }
