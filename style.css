@@ -7,7 +7,7 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #f44336;
+  background-color: #e99089;
   color: white;
   padding: 15px;
   border-radius: 5px;
@@ -15,6 +15,7 @@ body {
   z-index: 1000;
   display: none;
   max-width: 300px;
+  font-family: 'Courier New';
 }
 
 .alert .button {
