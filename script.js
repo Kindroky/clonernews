@@ -1,21 +1,25 @@
 //CONSTANTS
-const VERBOSE = 1;
+const VERBOSE = 2;
 const BASE_URL = "https://hacker-news.firebaseio.com/v0/";
 const POSTS_CONTAINER = document.getElementById("posts-container");
 const BUTTONS = document.querySelectorAll(".selection");
 
 //VARIABLES
 let actual_theme = "beststories.json";
-let POSTS = getIdsArray();
+let POSTS = [];
 
 //ON DOCUMENT LOAD
-add_10_Posts();
-verifyNewPost();
+(async function initialize() {
+  POSTS = await getIdsArray();
+  add_10_Posts();
+  verifyNewPost();
+})();
 
 BUTTONS.forEach((button) => {
-  button.addEventListener("click", function () {
+  button.addEventListener("click", async function () {
     POSTS_CONTAINER.innerHTML = "";
     actual_theme = this.id + ".json";
+    POSTS = await getIdsArray();
     add_10_Posts();
   });
 });
@@ -58,13 +62,9 @@ async function add_10_Posts() {
     POSTS = await getIdsArray();
   }
 
-  const actual_len =
-    POSTS_CONTAINER.children.length - 1 > 0
-      ? POSTS_CONTAINER.children.length - 1
-      : 0;
+  const actual_len = POSTS_CONTAINER.children.length;
 
-  const tmp_posts = await POSTS;
-  const slice = tmp_posts.slice(actual_len, actual_len + 10);
+  const slice = POSTS.slice(actual_len, actual_len + 10);
 
   //For each new post, add it to the container
   for (const id of slice) {
@@ -77,6 +77,7 @@ async function add_10_Posts() {
     <p>${post.score} points</p>
     <p>By <strong>${post.by}</strong></p>
     <p>${new Date(post.time * 1000).toLocaleString()}</p>
+    <p>Type : ${post.type}</p>
     <p>URL : <a href="${post.url}" target="_blank"">link</a></p> `;
     POSTS_CONTAINER.appendChild(newPostDiv);
   }
@@ -85,10 +86,10 @@ async function add_10_Posts() {
 const throttled = _.throttle(add_10_Posts, 2000);
 window.onscroll = function () {
   if (
-    window.innerHeight + Math.round(window.scrollY) >
+    window.innerHeight + Math.round(window.scrollY) >=
     document.body.offsetHeight
   ) {
-    console.log("triggering at the end of page");
+    if (VERBOSE >= 2) console.log("Triger bottom page");
     throttled();
   }
 };
