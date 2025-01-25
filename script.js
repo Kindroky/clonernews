@@ -77,7 +77,7 @@ async function add_10_Posts() {
     <p>${post.score} points</p>
     <p>By <strong>${post.by}</strong></p>
     <p>${new Date(post.time * 1000).toLocaleString()}</p>
-    <p>URL : <a href="${post.url} target="_blank"">link</a></p> `;
+    <p>URL : <a href="${post.url}" target="_blank"">link</a></p> `;
     POSTS_CONTAINER.appendChild(newPostDiv);
   }
 }
