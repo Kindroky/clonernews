@@ -23,6 +23,7 @@ async function fetchingData(data) {
     console.error("Error:", error);
   }
 }
+
 //fetching post data
 async function fetchingPosts(id) {
   const post = await fetchingData(`item/${id}.json`);
@@ -81,12 +82,19 @@ window.onscroll = function () {
     throttled();
   }
 };
+verifyNewPost();
+async function verifyNewPost() {
+  let actualID = await fetchingData("maxitem.json");
 
-BUTTONS.forEach((button) => {
-  button.addEventListener("click", function () {
-    POSTS_CONTAINER.innerHTML = "";
-    actual_theme = this.id + ".json";
-    POSTS = getIdsArray();
-    add_10_Posts();
-  });
-});
+  setInterval(async () => {
+    try {
+      const maxID = await fetchingData("maxitem.json");
+      if (actualID !== maxID) {
+        alert("❗ ALERT : New content available, check it out!");
+        actualID = maxID;
+      }
+    } catch (error) {
+      console.error("Error checking for new posts:", error);
+    }
+  }, 5000);
+}
