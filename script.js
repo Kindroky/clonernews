@@ -22,6 +22,7 @@ async function fetchingData(data) {
     console.error("Error:", error);
   }
 }
+
 //fetching post data
 async function fetchingPosts(id) {
   const post = await fetchingData(`item/${id}.json`);
@@ -75,4 +76,20 @@ window.onscroll = function(ev) {
       console.log("triggering at the end of page")
       throttled();
   }
+}
+verifyNewPost();
+async function verifyNewPost() {
+  let actualID = await fetchingData('maxitem.json');
+  
+  setInterval(async () => {
+    try {
+      const maxID = await fetchingData('maxitem.json');
+      if (actualID !== maxID) {
+        alert("❗ ALERT : New content available, check it out!");
+        actualID = maxID;
+      }
+    } catch (error) {
+      console.error("Error checking for new posts:", error);
+    }
+  }, 5000);
 }
