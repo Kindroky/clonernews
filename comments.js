@@ -49,15 +49,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const commentsDiv = document.createElement('div');
         commentsDiv.id = 'commentsDiv';
         
+        /*
         for (let element of getComments(post.kids)) {
             commentsDiv.appendChild(element);
         }
+        */
+
+        getAllComments(post.kids, commentsDiv, 0);
 
         postDiv.removeChild(loadingDiv);
         postDiv.appendChild(commentsDiv);
     }
 });
 
+/*
 function getComments(comments) {
     let cmtList = [];
     let elementsList = [];
@@ -98,4 +103,40 @@ function getComments(comments) {
     console.log(elementsList);
 
     return elementsList;
+}
+*/
+
+function getAllComments(comments, commentsContainer, currentDepth) {
+    const container = document.createElement('div');
+    
+    for (let id of comments) {
+        fetchingPosts(id).then(cmtInfo => {
+            const comment = document.createElement('div');
+
+            comment.style.marginLeft = String(currentDepth * 20) + 'px';
+
+            comment.innerHTML = `<h3>${cmtInfo.by}</h3>
+            <p>${(cmtInfo.text === '[dead]') ? '[This comment has been deleted]' : cmtInfo.text}</p>
+            <p class='info'>${new Date(cmtInfo.time * 1000).toLocaleString()}</p>
+            `;
+
+            if (cmtInfo.kids) {
+                getAllComments(cmtInfo.kids.sort((cmt1, cmt2) => {
+                    if (cmt1.id < cmt2.id) {
+                        return 1;
+                    }
+        
+                    if (cmt1.id > cmt2.id) {
+                        return -1;
+                    }
+        
+                    return 0;
+                }), comment, currentDepth + 1);
+            }
+
+            container.appendChild(comment);
+        });
+    }
+
+    commentsContainer.appendChild(container);
 }
