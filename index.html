@@ -29,12 +29,16 @@
       </button>
     </header>
   </body>
-  <div id="alert" class="alert" style="display: none;">
-    <span class="close-button" onclick="document.getElementById('alert').style.display='none';">&times;</span>
+  <div id="alert" class="alert" style="display: none">
+    <span
+      class="close-button"
+      onclick="document.getElementById('alert').style.display='none';"
+      >&times;</span
+    >
     <span id="alert-message">ALERT : New content available, check it out!</span>
     <button onclick="location.reload();" class="refresh-button">Refresh</button>
   </div>
   <div id="posts-container"></div>
   <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </html>

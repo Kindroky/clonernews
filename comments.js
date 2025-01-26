@@ -13,10 +13,43 @@ function loadError() {
   document.body.appendChild(indexBtn);
 }
 
+// Crée et retourne un élément de commentaire
+function createCommentElement(comment) {
+  const commentDiv = document.createElement("div");
+  commentDiv.className = "comment";
+  commentDiv.innerHTML = `
+    <p class="info">
+      by <strong>${comment.by}</strong> 
+      on ${new Date(comment.time * 1000).toLocaleString()}
+    </p>
+    <p class="comment-text">${comment.text}</p>
+  `;
+
+  if (comment.kids && comment.kids.length > 0) {
+    const viewRepliesBtn = document.createElement("button");
+    viewRepliesBtn.textContent = "View Replies";
+    viewRepliesBtn.onclick = () => {
+      window.location.href = `?post=${comment.id}`;
+    };
+    commentDiv.appendChild(viewRepliesBtn);
+  }
+
+  return commentDiv;
+}
+
+// Crée et retourne un élément de chargement
+function createLoadingDiv() {
+  const loadingDiv = document.createElement("div");
+  loadingDiv.className = "loading";
+  loadingDiv.innerHTML = "<p>Loading comments...</p>";
+  return loadingDiv;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.size === 0 || !urlParams.has("post")) {
     loadError();
+    return;
   }
 
   let post = await fetchingPosts(Number(urlParams.get("post")));
@@ -51,107 +84,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         commentsDiv.appendChild(commentElement);
       })
     );
-    const commentsDiv = document.createElement("div");
-    commentsDiv.id = "commentsDiv";
-
-    /*
-        for (let element of getComments(post.kids)) {
-            commentsDiv.appendChild(element);
-        }
-        */
-
-    getAllComments(post.kids, commentsDiv, 0);
 
     postDiv.removeChild(loadingDiv);
     postDiv.appendChild(commentsDiv);
   }
 });
-
-/*
-function getComments(comments) {
-    let cmtList = [];
-    let elementsList = [];
-
-    for (let id of comments) {
-        fetchingPosts(id).then(cmtInfo => cmtList.push(cmtInfo));
-    }
-
-    // If ID is greater, then comment is newer
-    cmtList.sort((cmt1, cmt2) => {
-        if (cmt1.id < cmt2.id) {
-            return 1;
-        }
-
-        if (cmt1.id > cmt2.id) {
-            return -1;
-        }
-
-        return 0;
-    });
-
-    console.log('Comments sorted.');
-
-    console.log(cmtList);
-
-    for (let cmt of cmtList) {
-        const comment = document.createElement('div');
-        comment.innerHTML = `<h3>${cmt.by}</h3>
-        <p>${(cmt.text === '[dead]') ? '[This comment has been deleted]' : cmt.text}</p>
-        <p class='info'>${new Date(cmt.time * 1000).toLocaleString()}</p>
-        `;
-        console.log(comment);
-        elementsList.push(comment);
-    }
-
-    console.log('Comments created.');
-
-    console.log(elementsList);
-
-    return elementsList;
-}
-*/
-
-function getAllComments(comments, commentsContainer, currentDepth) {
-  const container = document.createElement("div");
-
-  for (let id of comments) {
-    fetchingPosts(id).then((cmtInfo) => {
-      const comment = document.createElement("div");
-
-      comment.style.marginLeft = String(currentDepth * 20) + "px";
-
-      comment.innerHTML = `<h3>${cmtInfo.by}</h3>
-            <p>${
-              cmtInfo.text === "[dead]"
-                ? "[This comment has been deleted]"
-                : cmtInfo.text
-            }</p>
-            <p class='info'>${new Date(
-              cmtInfo.time * 1000
-            ).toLocaleString()}</p>
-            `;
-
-      if (cmtInfo.kids) {
-        getAllComments(
-          cmtInfo.kids.sort((cmt1, cmt2) => {
-            if (cmt1.id < cmt2.id) {
-              return 1;
-            }
-
-            if (cmt1.id > cmt2.id) {
-              return -1;
-            }
-
-            return 0;
-          }),
-          comment,
-          currentDepth + 1
-        );
-      }
-
-      container.appendChild(comment);
-    });
-  }
-
-  commentsContainer.appendChild(container);
-}

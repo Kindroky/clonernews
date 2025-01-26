@@ -115,16 +115,16 @@ header {
   color: rgb(252, 247, 204);
   padding: 15px;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   display: none;
   max-width: 320px;
-  font-family: 'Courier New';
+  font-family: "Courier New";
   font-weight: bold;
 }
 
 .refresh-button {
-  font-family:'Arial';
+  font-family: "Arial";
   font-weight: bold;
   background-color: rgb(216, 208, 100);
   color: rgb(8, 83, 112);
@@ -134,10 +134,24 @@ header {
 
 .refresh-button:hover {
   color: #96361f;
-  background-color:rgb(125, 201, 224) ;
+  background-color: rgb(125, 201, 224);
 }
 
 #alert-message {
   display: block;
   margin-right: 30px;
+}
+
+.btn-veiw-post {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-veiw-post:hover {
+  background-color: #2980b9;
 }
