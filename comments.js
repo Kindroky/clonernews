@@ -77,13 +77,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     const commentsDiv = document.createElement("div");
     commentsDiv.id = "commentsDiv";
 
-    await Promise.all(
-      post.kids.map(async (commentId) => {
-        const comment = await fetchingPosts(commentId);
-        const commentElement = createCommentElement(comment);
-        commentsDiv.appendChild(commentElement);
-      })
-    );
+    // Fetch all comments and sort from newest to oldest
+    const commentPromises = post.kids.map(async (commentId) => {
+      return await fetchingPosts(commentId);
+    });
+
+    const comments = await Promise.all(commentPromises);
+
+    // Sort comments by time (newest first)
+    comments.sort((a, b) => b.time - a.time);
+
+    // Create and append comment elements
+    comments.forEach((comment) => {
+      const commentElement = createCommentElement(comment);
+      commentsDiv.appendChild(commentElement);
+    });
 
     postDiv.removeChild(loadingDiv);
     postDiv.appendChild(commentsDiv);
