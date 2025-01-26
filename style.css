@@ -54,6 +54,19 @@ header {
   color: #e74c3c;
 }
 
+.info {
+  color: #a5a5a5;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+}
+
+.loading p {
+  color: #a5a5a5;
+}
+
 @media (max-width: 600px) {
   body {
     padding: 10px;
